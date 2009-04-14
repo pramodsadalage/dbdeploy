@@ -45,7 +45,7 @@ public class DatabaseSchemaVersionManager implements AppliedChangesProvider {
 		}
 	}
 
-	public String getChangelogUpdateSql(ChangeScript script) {
+	public String getChangelogInsertSql(ChangeScript script) {
 		return String.format(
 			"INSERT INTO changelog (change_number, delta_set, complete_dt, applied_by, description)%n" +
 					" VALUES (%d, '%s', %s, %s, '%s')",

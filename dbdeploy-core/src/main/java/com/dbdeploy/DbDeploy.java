@@ -2,6 +2,7 @@ package com.dbdeploy;
 
 import com.dbdeploy.appliers.ApplyMode;
 import com.dbdeploy.appliers.PrintStreamApplier;
+import com.dbdeploy.appliers.DirectToDbApplier;
 import com.dbdeploy.database.changelog.DatabaseSchemaVersionManager;
 import com.dbdeploy.database.changelog.QueryExecuter;
 import com.dbdeploy.database.syntax.DbmsSyntax;
@@ -80,8 +81,13 @@ public class DbDeploy {
 		ChangeScriptRepository changeScriptRepository =
 				new ChangeScriptRepository(new DirectoryScanner().getChangeScriptsForDirectory(scriptdirectory));
 
-		ChangeScriptApplier doScriptApplier =
-				new PrintStreamApplier(ApplyMode.DO, new PrintStream(outputfile), dbmsSyntax, databaseSchemaVersion);
+		ChangeScriptApplier doScriptApplier;
+
+		if (outputfile != null) {
+			doScriptApplier = new PrintStreamApplier(ApplyMode.DO, new PrintStream(outputfile), dbmsSyntax, databaseSchemaVersion);
+		} else {
+			doScriptApplier = new DirectToDbApplier(queryExecuter, databaseSchemaVersion);
+		}
 
 		ChangeScriptApplier undoScriptApplier = null;
 
@@ -103,7 +109,6 @@ public class DbDeploy {
 		checkForRequiredParameter(driver, "driver");
 		checkForRequiredParameter(url, "url");
 		checkForRequiredParameter(dbms, "dbms");
-		checkForRequiredParameter(outputfile, "outputfile");
 		checkForRequiredParameter(scriptdirectory, "dir");
 
 		if (scriptdirectory == null || !scriptdirectory.isDirectory()) {
@@ -120,14 +125,6 @@ public class DbDeploy {
 	private void checkForRequiredParameter(Object parameterValue, String parameterName) throws UsageException {
 		if (parameterValue == null) {
 			UsageException.throwForMissingRequiredValue(parameterName);
-		}
-	}
-
-	private PrintStream createUndoOutputPrintStream(File undoOutputFile) throws FileNotFoundException {
-		if (undoOutputFile != null) {
-			return new PrintStream(undoOutputFile);
-		} else {
-			return null;
 		}
 	}
 

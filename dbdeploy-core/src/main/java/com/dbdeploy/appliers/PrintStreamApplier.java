@@ -48,7 +48,7 @@ public class PrintStreamApplier extends AbstractChangeScriptApplier  {
 
 	@Override
 	protected void insertToSchemaVersionTable(ChangeScript changeScript) {
-		output.println(schemaVersionManager.getChangelogUpdateSql(changeScript)
+		output.println(schemaVersionManager.getChangelogInsertSql(changeScript)
 				+ dbmsSyntax.generateStatementDelimiter());
 		output.println();
 	}

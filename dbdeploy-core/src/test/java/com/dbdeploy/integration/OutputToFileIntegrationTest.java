@@ -10,7 +10,7 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
 
-public class IntegrationTest {
+public class OutputToFileIntegrationTest {
 	@Test
 	public void shouldSuccessfullyApplyAValidSetOfDeltas() throws Exception {
 		Database db = new Database("success_test");

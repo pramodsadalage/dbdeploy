@@ -49,7 +49,7 @@ public class DatabaseSchemaVersionManagerTest {
 	@Test
 	public void shouldGenerateSqlStringToUpdateChangelogTableAfterScriptApplication() throws Exception {
 		final ChangeScript script = new ChangeScript(99, "Some Description");
-		String sql = schemaVersionManager.getChangelogUpdateSql(script);
+		String sql = schemaVersionManager.getChangelogInsertSql(script);
 		String expected =
 				"INSERT INTO changelog (change_number, delta_set, complete_dt, applied_by, description) " +
 						"VALUES (99, 'deltaSetName', (timestamp), (user), 'Some Description')";
