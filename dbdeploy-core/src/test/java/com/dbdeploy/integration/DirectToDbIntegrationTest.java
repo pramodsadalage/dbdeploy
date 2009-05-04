@@ -27,6 +27,24 @@ public class DirectToDbIntegrationTest {
 		assertThat((Integer) results.get(0)[0], is(6));
 	}
 
+    @Test
+    public void shouldSuccessfullyApplyAValidSetOfDeltasIncludingMutliStatementDeltas() throws Exception {
+        Database db = new Database("todb_multistatement_test");
+        db.createSchemaVersionTable();
+
+        DbDeploy dbDeploy = new DbDeploy();
+        db.applyDatabaseSettingsTo(dbDeploy);
+        dbDeploy.setScriptdirectory(findScriptDirectory("src/it/db/multi_statement_deltas"));
+        dbDeploy.go();
+
+        assertThat(db.getChangelogEntries(), hasItems(1, 2));
+
+        List<Object[]> results = db.executeQuery("select id from Test");
+        assertThat(results.size(), is(2));
+        assertThat(results, hasItems(new Object[] {6}, new Object[] {7}));
+    }
+
+
 	@Test
 	public void shouldBeAbleToRecoverFromBadScriptsJustByRunningCorrectedScriptsAgain() throws Exception {
 		Database db = new Database("todb_failure_recovery_test");
