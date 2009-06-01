@@ -1,9 +1,9 @@
 package com.dbdeploy.database.syntax;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 import org.junit.Test;
-import com.dbdeploy.database.syntax.*;
 
 public class DbmsSyntaxFactoryTest {
 	private final DbmsSyntaxFactory factory = new DbmsSyntaxFactory();

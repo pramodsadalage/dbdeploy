@@ -17,4 +17,8 @@ public class OracleSqlPlusDbmsSyntax extends DbmsSyntax {
 	public String generateUser() {
 		return "USER";
 	}
+
+    public String generateBeginTransaction() {
+        return "";
+    }
 }
